@@ -1,0 +1,6 @@
+Install rich 
+```
+pip install rich
+```
+
+Run Project = python main.py
