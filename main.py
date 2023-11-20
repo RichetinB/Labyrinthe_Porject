@@ -17,8 +17,8 @@ welcome_frame.add_row("[bold yellow]  Labyrinth Game![/bold yellow]")
 
 console.print(welcome_frame)
 
-name = console.input("[bold blue]Enter your name:[/bold blue]")
-console.print("[bold magenta]Choose your class:[/bold magenta]")
+name = console.input("[bold blue]Enter your name: [/bold blue]")
+console.print("[bold magenta]Choose your class: [/bold magenta]")
 
 class_table = Table(title="[cyan]Available Classes[/cyan]")
 class_table.add_column("Class Number", style="cyan", justify="right")
@@ -28,7 +28,7 @@ class_table.add_row("2", "Mage")
 class_table.add_row("3", "Thief")
 console.print(class_table)
 
-class_choice = console.input("[bold blue]Enter the number of your class:[/bold blue]")
+class_choice = console.input("[bold blue]Enter the number of your class: [/bold blue]")
 
 if class_choice == "1":
     player_class = Warrior(name, 20, 8, 3, Dice(6))

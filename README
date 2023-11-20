@@ -1,3 +1,7 @@
+
+Scénario : "Vous vous réveillez dans un monde mystérieux, entouré d'arbres majestueux qui semblent vous défier de découvrir leurs secrets. Le murmure du vent résonne dans les couloirs du labyrinthe, et une voix lointaine vous encourage à trouver la sortie. Armé de votre courage, vous vous lancez dans cette aventure périlleuse, où chaque tournant pourrait révéler des défis inattendus et des mystères insoupçonnés. Êtes-vous prêt à affronter le labyrinthe et à découvrir ce qui vous attend au-delà de ses murs?"
+
+
 Install rich 
 ```
 pip install rich
