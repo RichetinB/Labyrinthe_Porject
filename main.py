@@ -1,13 +1,14 @@
 from rich.console import Console
 from rich.table import Table
-from rich.prompt import Prompt
-from character import Warrior, Mage, Thief, Character
+from character import Warrior, Mage, Thief, Enemy
 from engine import GameEngine
 from dice import Dice
-from labyrinthe import Labyrinthe
-from engine import GameEngine
+import os
 
 console = Console()
+
+def clear_console():
+    os.system("cls" if os.name == "nt" else "clear")
 
 # Cadre de bienvenue stylé
 welcome_frame = Table(show_header=False, show_lines=False)
@@ -15,16 +16,26 @@ welcome_frame.add_row("[bold yellow]Welcome to the[/bold yellow]")
 welcome_frame.add_row("[bold yellow]  Labyrinth Game![/bold yellow]")
 
 console.print(welcome_frame)
+input("\nPress Enter to continue...")
+
+clear_console()
 
 name = console.input("[bold blue]Enter your name: [/bold blue]")
 console.print("[bold magenta]Choose your class: [/bold magenta]")
 
+# Afficher les caractéristiques des classes
 class_table = Table(title="[cyan]Available Classes[/cyan]")
 class_table.add_column("Class Number", style="cyan", justify="right")
 class_table.add_column("Class", style="green", justify="left")
-class_table.add_row("1", "Warrior")
-class_table.add_row("2", "Mage")
-class_table.add_row("3", "Thief")
+class_table.add_column("Attack", style="yellow", justify="right")
+class_table.add_column("Defense", style="yellow", justify="right")
+class_table.add_column("Health", style="yellow", justify="right")
+
+# Ajouter les caractéristiques des classes
+class_table.add_row("1", "Warrior", "8", "3", "20")
+class_table.add_row("2", "Mage", "8", "3", "20")
+class_table.add_row("3", "Thief", "8", "3", "20")
+
 console.print(class_table)
 
 class_choice = console.input("[bold blue]Enter the number of your class: [/bold blue]")
@@ -39,5 +50,31 @@ else:
     console.print("[bold red]Invalid class choice. Exiting the game.[/bold red]")
     exit()
 
-engine = GameEngine(labyrinth_size=10, player=player_class)
+clear_console()
+def choose_difficulty(self):
+        print("Choose your difficulty:")
+        print("1. Easy")
+        print("2. Medium")
+        print("3. Hard")
+
+        while True:
+            choice = input("Enter the number of your choice: ")
+            if choice in ['1', '2', '3']:
+                return int(choice)
+            else:
+                print("Invalid choice. Please enter 1, 2, or 3.")
+
+
+def get_difficulty_settings(self, difficulty):
+    if difficulty == 1:
+        return 10, 2  
+    elif difficulty == 2:
+        return 15, 4 
+    elif difficulty == 3:
+        return 20, 6 
+    
+my_enemy = Enemy("MOB", 22, 5, 2, Dice(10))
+
+engine = GameEngine()
+engine.choose_difficulty(player_class, my_enemy)
 engine.play_game()

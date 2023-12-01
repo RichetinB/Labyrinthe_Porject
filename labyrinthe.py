@@ -3,32 +3,34 @@ import os
 from random import shuffle, randrange
 
 class Labyrinthe:
-    def __init__(self, p, q, player):
+    def __init__(self, p, q, player, enemy):
         self.p = p
         self.q = q
-        self.player_position = (0, 0)
-        self.exit_position = (p - 1, q - 1)  # Position de la sortie
-        self.player = player
+        self.enemy = enemy
         self.generate()
 
     def generate(self):
         self.matrix = [[' ' for _ in range(self.q)] for _ in range(self.p)]
-        self.matrix[0][0] = 'P'  # Position initiale du joueur
-        self.matrix[self.exit_position[0]][self.exit_position[1]] = '✨'  # Position de la sortie
+        self.player_position = (0, 0)
+        self.exit_position = (self.p - 1, self.q - 1)  # Position de la sortie
+        self.enemy_position = (random.randint(0, self.p - 1), random.randint(0, self.q - 1))
+        self.place_element('P', self.player_position)
+        self.place_element('✨', self.exit_position)
+        self.place_element('E', self.enemy_position)
 
         # Génération du labyrinthe (version simplifiée)
         for i in range(self.p):
             for j in range(self.q):
-                if (i, j) != (0, 0) and (i, j) != self.exit_position and random.random() < 0.3:
+                if (i, j) not in [self.player_position, self.exit_position, self.enemy_position] and random.random() < 0.3:
                     self.matrix[i][j] = '#'  # 30% de chance d'ajouter un mur
 
-
+    def place_element(self, element, position):
+        x, y = position
+        self.matrix[x][y] = element
 
     def is_traversable(self, x, y):
         # Vérifie si la position (x, y) est traversable
         return self.matrix[x][y] not in ['#', '|', '| ', '-', '+']
-
-
 
     def display(self):
         for row in self.matrix:
@@ -53,7 +55,7 @@ class Labyrinthe:
             y += 1
 
         self.player_position = (x, y)
-        self.matrix[x][y] = 'P'  # Met à jour la nouvelle position du joueur
+        self.place_element('P', self.player_position)
 
         if self.player_position == self.exit_position:
             return True  # Le joueur a atteint la sortie, la partie est gagnée
@@ -72,5 +74,11 @@ class Labyrinthe:
             return True
         elif direction == 'd' and y < self.q - 1 and self.matrix[x][y + 1] != '#':
             return True
+
+        return False
+    
+    def Battle(self):
+        if self.player_position == self.enemy_position:
+            return True  # Le joueur rentre en combat
 
         return False
