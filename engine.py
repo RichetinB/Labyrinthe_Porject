@@ -1,6 +1,6 @@
-from labyrinthe import Labyrinthe
 import time
 import os
+from labyrinthe import Labyrinthe
 
 class GameEngine:
     def __init__(self, labyrinth_size, player):
