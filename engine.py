@@ -1,11 +1,14 @@
-from labyrinthe import Labyrinthe
 import time
 import os
+from labyrinthe import Labyrinthe
+from character import Enemy
 
 class GameEngine:
-    def __init__(self, labyrinth_size, player):
+    def __init__(self, labyrinth_size, player, enemy):
         self.labyrinth = Labyrinthe(labyrinth_size, labyrinth_size, player)
         self.player = player
+        self.enemy = enemy
+
 
     def play_game(self):
         self.clear_console()
@@ -17,6 +20,11 @@ class GameEngine:
         while True:
             self.labyrinth.display()
             direction = input("Enter direction (z/q/s/d to move, or 'exit' to quit): ")
+
+            if self.labyrinth.Battle():
+                while self.player.is_alive() and self.enemy.is_alive():
+                    self.player.attack(self.enemy)
+                    self.enemy.attack(self.player)
 
             if direction == 'exit':
                 print("Exiting the game. Goodbye!")

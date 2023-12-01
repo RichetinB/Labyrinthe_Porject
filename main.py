@@ -1,11 +1,10 @@
-# main.py
-
-from dice import Dice
-# main.py
 from rich.console import Console
 from rich.table import Table
 from rich.prompt import Prompt
-from character import Warrior, Mage, Thief, Character
+from character import Warrior, Mage, Thief, Character, Enemy
+from engine import GameEngine
+from dice import Dice
+from labyrinthe import Labyrinthe
 from engine import GameEngine
 
 console = Console()
@@ -40,5 +39,7 @@ else:
     console.print("[bold red]Invalid class choice. Exiting the game.[/bold red]")
     exit()
 
-engine = GameEngine(labyrinth_size=5, player=player_class)
+my_ennemy = Enemy("MOB", 5, 2, 1, Dice(6))
+
+engine = GameEngine(labyrinth_size=10, player=player_class, enemy=my_ennemy)
 engine.play_game()

@@ -78,13 +78,17 @@ class Thief(Character):
         print(f"🔪 Bonus: Sneacky attack (+{target.get_defense_value()} damages)")
         return super().compute_damages(roll, target) + target.get_defense_value()
 
+class Enemy(Character):
+    def compute_damages(self, roll, target: Character):
+        print(f"👾 Bonus:Malveillance Max (+1 damages)")
+        return super().compute_damages(roll, target) + 1
 
-if __name__ == "__main__":
-    character1 = Warrior("Salim", 20, 8, 3, Dice(6))
-    character2 = Thief("Lisa", 20, 8, 3, Dice(6))
-    print(character1)
-    print(character2)
+# if __name__ == "__main__":
+#     character1 = Warrior("Salim", 20, 8, 3, Dice(6))
+#     character2 = Thief("Lisa", 20, 8, 3, Dice(6))
+#     print(character1)
+#     print(character2)
     
-    while (character1.is_alive() and character2.is_alive()):
-        character1.attack(character2)
-        character2.attack(character1)
+    # while (character1.is_alive() and character2.is_alive()):
+    #     character1.attack(character2)
+    #     character2.attack(character1)
