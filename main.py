@@ -3,7 +3,12 @@ from rich.table import Table
 from character import Warrior, Mage, Thief, Enemy
 from engine import GameEngine
 from dice import Dice
-import os
+import os 
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import pygame
+from sound import  sound_lobby
+# from sound import stop_sound_lobby
+
 
 console = Console()
 
@@ -11,6 +16,9 @@ def clear_console():
     os.system("cls" if os.name == "nt" else "clear")
 
 # Cadre de bienvenue stylé
+
+sound_lobby.play()
+
 welcome_frame = Table(show_header=False, show_lines=False)
 welcome_frame.add_row("[bold yellow]Welcome to the[/bold yellow]")
 welcome_frame.add_row("[bold yellow]  Labyrinth Game![/bold yellow]")
@@ -80,6 +88,9 @@ def get_difficulty_settings(self, difficulty):
     elif difficulty == 3:
         return 20, 6 
     
+
+sound_lobby.stop()
+
 my_enemy = Enemy("MOB", 22, 5, 2, Dice(10))
 
 engine = GameEngine()

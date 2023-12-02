@@ -1,5 +1,7 @@
 import random
 import os
+from character import Enemy
+from dice import Dice
 
 class Labyrinthe:
     def __init__(self, p, q, player, enemy):
@@ -7,6 +9,8 @@ class Labyrinthe:
         self.q = q
         self.enemy = enemy
         self._exits_reached = 0
+        self.enemy = enemy
+        self.enemies = []
         self.generate()
 
     def generate(self):
@@ -14,6 +18,7 @@ class Labyrinthe:
         self.player_position = (0, 0)
         self.exit_position = (self.p - 1, self.q - 1)
         self.enemy_position = (random.randint(0, self.p - 1), random.randint(0, self.q - 1))
+        self.enemies = [Enemy(f"Enemy-{i+1}", 10, 2, 1, Dice(6)) for i in range(self.enemy)]
         self.place_element('P', self.player_position)
         self.place_element('✨', self.exit_position)
         self.place_element('E', self.enemy_position)
