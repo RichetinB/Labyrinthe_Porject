@@ -12,6 +12,9 @@ class GameEngine:
         self.enemy = None
         self.labyrinth = None
         self.difficulty = None
+        self._exits_reached = 0
+
+        
 
     def choose_difficulty(self, player, enemy):
         self.player = player
@@ -44,9 +47,14 @@ class GameEngine:
         self.clear_console()
         self.display_welcome_story()
         self.clear_console()
-        while True:
+
+
+
+        while self.labyrinth._exits_reached < 3:  # Modifiez ici pour vérifier si le nombre de sorties atteintes est inférieur à 3
             self.clear_console()
             self.labyrinth.display()
+            self.display_player_status()
+
             direction = input("Enter direction (z/q/s/d to move, 'exit' to quit, 'change' to regenerate labyrinth): ")
 
             if direction == 'change':
@@ -69,10 +77,22 @@ class GameEngine:
                 if self.labyrinth.move_player(direction):
                     self.display_congratulations_story()
                     print("Congratulations! You won!")
-                    break
+                    self.labyrinth.generate() 
+                    self.labyrinth._exits_reached += 1  
+                    self.display_exits_count()  
             else:
                 print("Invalid move. Try again.")
         
+        if self.labyrinth._exits_reached >= 3:
+            print("You've reached the exit 3 times. It's time to face the final boss!")
+
+    def display_exits_count(self):
+        print(f"You've reached the exit {self._exits_reached} times.")
+
+    def display_final_boss_battle(self):
+        # Ajoute ici le combat contre le boss final
+        # Assure-toi de créer une instance de Boss et de lancer le combat
+        pass
 
     def change_floor(self):
         print("Regenerating the labyrinth...")
@@ -81,10 +101,9 @@ class GameEngine:
         print("You've changed floors. A new labyrinth awaits!")
 
 
-    def display_battle_status(self):
-        print("\nBattle Status:")
-        print(f"{self.player.get_name()} HP: {self.player._current_hp}/{self.player._max_hp}")
-        print(f"{self.enemy.get_name()} HP: {self.enemy._current_hp}/{self.enemy._max_hp}")
+    def display_player_status(self):
+        print("\nPlayer Status:")
+        self.player.show_healthbar()
 
 
     def enter_battle(self):
@@ -109,9 +128,7 @@ class GameEngine:
             self.enemy.attack(self.player)
 
             # Demander au joueur s'il veut continuer le combat
-            continue_battle = input("\nDo you want to continue the battle? (yes/no): ").lower()
-            if continue_battle != 'yes':
-                break
+            input("\nPress Enter to continue the battle.")
 
         if self.player.is_alive():
             print("Congratulations! You won the battle.")
@@ -136,11 +153,6 @@ class GameEngine:
         print("You have conquered the labyrinth and claimed the legendary treasures!")
         time.sleep(2)
         print("The world will forever remember the brave adventurer who navigated the maze.")
-
-    def display_battle_status(self):
-        print("\nBattle Status:")
-        print(f"{self.player.get_name()} HP: {self.player._current_hp}/{self.player._max_hp}")
-        print(f"{self.enemy.get_name()} HP: {self.enemy._current_hp}/{self.enemy._max_hp}")
 
     def clear_console(self):
         os.system('cls' if os.name == 'nt' else 'clear')

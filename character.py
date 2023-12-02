@@ -8,8 +8,12 @@ from rich import print
 class MessageManager():
     pass
 
+
+
 class Character:
     
+
+
     def __init__(self, name: str, max_hp: int, attack: int, defense: int, dice: Dice):
         self._name = name
         self._max_hp = max_hp
@@ -65,6 +69,11 @@ class Character:
         wounds = self.compute_defense(damages, roll, attacker)
         print(f"🛡️ {self._name} take {wounds} wounds from {attacker.get_name()} (damages: {damages} - defense: {self._defense_value} - roll: {roll})")
         self.decrease_health(wounds)
+    
+    def is_ready_for_boss_fight(self):
+        return self._current_hp > 0 and self._max_hp - self._current_hp < self._max_hp // 2
+
+    
 
 class Warrior(Character):
     def compute_damages(self, roll, target: Character):
@@ -86,3 +95,23 @@ class Enemy(Character):
     def compute_damages(self, roll, target: Character):
         print(f"👾 Bonus:Malveillance Max (+1 damages)")
         return super().compute_damages(roll, target) + 1
+    
+    def compute_defense(self, damages, roll, attacker: Character):
+        print(f"👾 Bonus:Malveillance Max (+1 defense)")
+        return super().compute_defense(damages, roll, attacker) + 1
+
+class Boss(Character):
+    def __init__(self, name: str, max_hp: int, attack: int, defense: int, dice, special_ability: str):
+        super().__init__(name, max_hp, attack, defense, dice)
+        self._special_ability = special_ability
+
+    def show_special_ability(self):
+        print(f"Special Ability: {self._special_ability}")
+
+    def attack(self, target: Character):
+        if not self.is_alive():
+            return
+        roll = self._dice.roll()
+        damages = self.compute_damages(roll, target)
+        print(f"⚔️ {self._name} uses {self._special_ability} against {target.get_name()} dealing {damages} damages (attack: {self._attack_value} + roll: {roll})")
+        target.defense(damages, self)

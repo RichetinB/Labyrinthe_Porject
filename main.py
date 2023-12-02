@@ -39,8 +39,8 @@ class_table.add_column("Defense", style="yellow", justify="right")
 class_table.add_column("Health", style="yellow", justify="right")
 
 # Ajouter les caractéristiques des classes
-class_table.add_row("1", "Warrior", "8", "3", "20")
-class_table.add_row("2", "Mage", "8", "3", "20")
+class_table.add_row("1", "Warrior", "8", "5", "25")
+class_table.add_row("2", "Mage", "11", "2", "17")
 class_table.add_row("3", "Thief", "8", "3", "20")
 
 console.print(class_table)
@@ -48,9 +48,9 @@ console.print(class_table)
 class_choice = console.input("[bold blue]Enter the number of your class: [/bold blue]")
 
 if class_choice == "1":
-    player_class = Warrior(name, 20, 8, 3, Dice(6))
+    player_class = Warrior(name, 25, 8, 5, Dice(6))
 elif class_choice == "2":
-    player_class = Mage(name, 20, 8, 3, Dice(6))
+    player_class = Mage(name, 17, 11, 2, Dice(6))
 elif class_choice == "3":
     player_class = Thief(name, 20, 8, 3, Dice(6))
 else:
