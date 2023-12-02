@@ -17,9 +17,12 @@ class Labyrinthe:
         self.player_position = (0, 0)
         self.exit_position = (self.p - 1, self.q - 1)
         self.enemy_position = (random.randint(0, self.p - 1), random.randint(0, self.q - 1))
+        self.potion = (random.randint(0, self.p - 1), random.randint(0, self.q - 1))
         self.place_element('P', self.player_position)
         self.place_element('✨', self.exit_position)
         self.place_element('E', self.enemy_position)
+        self.place_element('🧪', self.potion)
+    
 
         for i in range(self.p):
             for j in range(self.q):

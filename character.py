@@ -112,3 +112,29 @@ class Boss(Character):
         damage = 2 * (self.attack + self.dice.roll())  # Example: Double damage for the special attack
         target.receive_damage(damage)
         print(f"{target.name} takes {damage} damage from the boss special attack!")
+        
+    def use_potion(self, potion: Potion):
+        remaining_health = self.max_hp - self._current_hp
+        actual_healing = min(potion.healing_power, remaining_health)
+        
+        if actual_healing > 0:
+            print(f"🧪 {self._name} uses {potion.get_name()} and restores {actual_healing} health!")
+            self.restore_health(actual_healing)
+        else:
+            print(f"🧪 {self._name} uses {potion.get_name()} but it has no effect!")
+        
+class Potion:
+    def __init__(self, name, healing_power):
+        self.name = name
+        self.healing_power = healing_power
+        
+    def __str__(self):
+        return self
+    
+    def apply(self, target: Character):
+        if isinstance(target, Character):
+            print(f"🧪 {target.get_name()} uses {self._name} and restores {self._healing_power} health!")
+            target.restore_health(self._healing_power)
+        else:
+            print("Invalid target for potion!")
+             
