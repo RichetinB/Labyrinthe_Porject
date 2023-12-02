@@ -81,10 +81,10 @@ class GameEngine:
         print("You've changed floors. A new labyrinth awaits!")
 
 
-    def display_player_stats(self):
-        print(f"Player Stats - {self.player.get_name()}")
-        print(f"Class: {self.player.__class__.__name__}")
-        print(f"HP: {self.player.get_current_hp()}/{self.player.get_max_hp()}")
+    def display_battle_status(self):
+        print("\nBattle Status:")
+        print(f"{self.player.get_name()} HP: {self.player._current_hp}/{self.player._max_hp}")
+        print(f"{self.enemy.get_name()} HP: {self.enemy._current_hp}/{self.enemy._max_hp}")
 
 
     def enter_battle(self):

@@ -19,8 +19,15 @@ console.print(welcome_frame)
 input("\nPress Enter to continue...")
 
 clear_console()
-
-name = console.input("[bold blue]Enter your name: [/bold blue]")
+limit_name = 10
+while True:
+    name = console.input(f"[bold blue]Enter your name (max {limit_name} characters): [/bold blue]")
+    
+    # Vérifier si la longueur du nom est inférieure ou égale à la limite
+    if len(name) <= limit_name:
+        break
+    else:
+        console.print(f"[bold red]Name exceeds the character limit of {limit_name}. Please enter a shorter name.[/bold red]")
 console.print("[bold magenta]Choose your class: [/bold magenta]")
 
 # Afficher les caractéristiques des classes
