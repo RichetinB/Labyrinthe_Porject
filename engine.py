@@ -2,7 +2,7 @@ import time
 import os
 from labyrinthe import Labyrinthe
 from character import Enemy
-from character import Warrior, Mage, Thief
+from character import Warrior, Mage, Thief,Boss
 from dice import Dice
 
 
@@ -85,14 +85,43 @@ class GameEngine:
         
         if self.labyrinth._exits_reached >= 3:
             print("You've reached the exit 3 times. It's time to face the final boss!")
+            self.display_final_boss_battle()
 
     def display_exits_count(self):
         print(f"You've reached the exit {self._exits_reached} times.")
 
     def display_final_boss_battle(self):
-        # Ajoute ici le combat contre le boss final
-        # Assure-toi de créer une instance de Boss et de lancer le combat
-        pass
+        self.clear_console()
+        print("You've reached the final boss! Prepare for the ultimate battle.")
+        time.sleep(2)
+
+        final_boss = Boss("Final Boss", 50, 15, 10, Dice(8))
+
+        while self.player.is_alive() and final_boss.is_alive():
+            self.clear_console()
+            self.player.show_healthbar()
+            final_boss.show_healthbar()
+
+            print("\nIt's your turn to attack!")
+            time.sleep(1)
+            self.player.attack(final_boss)
+
+            if not final_boss.is_alive():
+                break
+
+            print("\nIt's the boss's turn to attack!")
+            time.sleep(1)
+            final_boss.special_attack(self.player)
+
+            # Demander au joueur s'il veut continuer le combat
+            input("\nPress Enter to continue the battle.")
+
+        if self.player.is_alive():
+            print("Congratulations! You defeated the final boss.")
+        else:
+            print("You were defeated by the final boss. Game over.")
+
+        input("Press Enter to return to the labyrinth.")
 
     def change_floor(self):
         print("Regenerating the labyrinth...")

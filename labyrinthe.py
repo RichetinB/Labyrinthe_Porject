@@ -84,5 +84,5 @@ class Labyrinthe:
     def is_exit(self):
         if self.player_position == self.exit_position:
             return True
-
+        
         return False

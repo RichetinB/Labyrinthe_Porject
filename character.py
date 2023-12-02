@@ -12,8 +12,6 @@ class MessageManager():
 
 class Character:
     
-
-
     def __init__(self, name: str, max_hp: int, attack: int, defense: int, dice: Dice):
         self._name = name
         self._max_hp = max_hp
@@ -101,17 +99,16 @@ class Enemy(Character):
         return super().compute_defense(damages, roll, attacker) + 1
 
 class Boss(Character):
-    def __init__(self, name: str, max_hp: int, attack: int, defense: int, dice, special_ability: str):
-        super().__init__(name, max_hp, attack, defense, dice)
-        self._special_ability = special_ability
+    def __init__(self, name, health, attack, defense, dice):
+        super().__init__(name, health, attack, defense, dice)
 
-    def show_special_ability(self):
-        print(f"Special Ability: {self._special_ability}")
+    def special_attack(self, target: Character):
+        print(f"{self._name} unleashes a devastating special attack!")
+        damage = self.compute_special_damages(target)
+        target.receive_damage(damage)
 
-    def attack(self, target: Character):
-        if not self.is_alive():
-            return
-        roll = self._dice.roll()
-        damages = self.compute_damages(roll, target)
-        print(f"⚔️ {self._name} uses {self._special_ability} against {target.get_name()} dealing {damages} damages (attack: {self._attack_value} + roll: {roll})")
-        target.defense(damages, self)
+    def boss_special_attack(self, target):
+        print(f"{self.name} uses a powerful boss special attack!")
+        damage = 2 * (self.attack + self.dice.roll())  # Example: Double damage for the special attack
+        target.receive_damage(damage)
+        print(f"{target.name} takes {damage} damage from the boss special attack!")
