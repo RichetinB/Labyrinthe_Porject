@@ -82,6 +82,7 @@ class GameEngine:
             self.clear_console()
             self.labyrinth.display()
             self.display_player_status()
+            
 
             direction = input("Enter direction (z/q/s/d to move, 'exit' to quit, 'change' to regenerate labyrinth): ")
 

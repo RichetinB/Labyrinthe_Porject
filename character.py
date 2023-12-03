@@ -101,17 +101,17 @@ class Enemy(Character):
 class Boss(Character):
     def __init__(self, name, health, attack, defense, dice):
         super().__init__(name, health, attack, defense, dice)
-
+    
     def special_attack(self, target: Character):
         print(f"{self._name} unleashes a devastating special attack!")
         damage = self.compute_special_damages(target)
         target.receive_damage(damage)
 
     def boss_special_attack(self, target):
-        print(f"{self.name} uses a powerful boss special attack!")
+        print(f"{self.name} uses a powerful special attack!")
         damage = 2 * (self.attack + self.dice.roll())  # Example: Double damage for the special attack
         target.receive_damage(damage)
-        print(f"{target.name} takes {damage} damage from the boss special attack!")
+        print(f"{target.name} takes {damage} damage from the special attack!")
         
     def use_potion(self, potion: Potion):
         remaining_health = self.max_hp - self._current_hp
