@@ -4,6 +4,13 @@ from character import Enemy
 from dice import Dice
 
 class Labyrinthe:
+    COLOR_PLAYER = "\033[92m" 
+    COLOR_EXIT = "\033[93m"  
+    COLOR_ENEMY = "\033[91m"  
+    COLOR_POTION = "\033[94m"  
+    COLOR_WALL = "\033[90m"    
+    COLOR_RESET = "\033[0m"     
+
     def __init__(self, p, q, player, enemy):
         self.p = p
         self.q = q
@@ -38,7 +45,14 @@ class Labyrinthe:
 
     def display(self):
         for row in self.matrix:
-            print(' '.join(row))
+            row_str = ' '.join([
+                f"{self.COLOR_PLAYER}{cell}{self.COLOR_RESET}" if cell == 'P' else
+                f"{self.COLOR_EXIT}{cell}{self.COLOR_RESET}" if cell == '✨' else
+                f"{self.COLOR_ENEMY}{cell}{self.COLOR_RESET}" if cell == 'E' else
+                f"{self.COLOR_POTION}{cell}{self.COLOR_RESET}" if cell == '🧪' else
+                f"{self.COLOR_WALL}{cell}{self.COLOR_RESET}" for cell in row
+            ])
+            print(row_str)
         print()
 
     def clear_console(self):
@@ -60,6 +74,17 @@ class Labyrinthe:
 
         self.player_position = (x, y)
         self.place_element('P', self.player_position)
+
+        if self.player_position == self.exit_position:
+            return True
+        elif self.player_position == self.potion:
+            self.clear_console()
+            print("You found a potion! Using it would be too easy...")
+            input("Press Enter to continue...")
+            self.clear_console()
+            self.display()
+            return False
+       
 
         if self.player_position == self.exit_position:
             return True

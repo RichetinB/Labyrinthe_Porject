@@ -1,12 +1,13 @@
+from rich.console import Console
+from rich.table import Table
 import time
 import os 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 import pygame.mixer
 from labyrinthe import Labyrinthe
-from character import Enemy
-from character import Warrior, Mage, Thief,Boss
 from dice import Dice
+from character import Warrior, Mage, Thief, Boss
 from sound import sound_game_over, sound_in_game, sound_last_boss, sound_lobby, sound_victory
 
 
@@ -20,7 +21,7 @@ class GameEngine:
         self.difficulty = None
         self._exits_reached = 0
         self.current_sound = None
-
+        self.potion = None
         
     def play_lobby_music(self):
         if self.current_sound != sound_lobby:
@@ -70,12 +71,14 @@ class GameEngine:
         elif difficulty == 3:
             return 20, 6 
 
+
+
     def play_game(self):
         self.play_in_game_music()
         self.clear_console()
         self.display_welcome_story()
+        input("\nPress Enter to continue...")
         self.clear_console()
-
 
 
         while self.labyrinth._exits_reached < 3:  # Modifiez ici pour vérifier si le nombre de sorties atteintes est inférieur à 3
@@ -86,6 +89,7 @@ class GameEngine:
 
             direction = input("Enter direction (z/q/s/d to move, 'exit' to quit, 'change' to regenerate labyrinth): ")
 
+
             if direction == 'change':
                 self.change_floor()
                 continue
@@ -94,6 +98,7 @@ class GameEngine:
                 self.enter_battle()
                 if self.player.is_alive():
                     print("Congratulations! You won the battle.")
+                    
                 else:
                     print("You were defeated in battle. Game over.")
                     break
@@ -104,11 +109,11 @@ class GameEngine:
 
             if self.labyrinth.is_valid_move(direction):
                 if self.labyrinth.move_player(direction):
-                    self.display_congratulations_story()
-                    print("Congratulations! You won!")
+                    
                     self.labyrinth.generate() 
                     self.labyrinth._exits_reached += 1  
-                    self.display_exits_count()  
+                    self.display_exits_count()
+                   
             else:
                 print("Invalid move. Try again.")
         
@@ -117,14 +122,17 @@ class GameEngine:
             self.display_final_boss_battle()
 
     def display_exits_count(self):
-        print(f"You've reached the exit {self._exits_reached} times.")
+        print(f"You've reached the exit {self.labyrinth._exits_reached} times.")
+        input("\n Press Enter")
 
     def display_final_boss_battle(self):
+        sound_in_game.stop()
+        sound_last_boss.play()
         self.clear_console()
         print("You've reached the final boss! Prepare for the ultimate battle.")
         time.sleep(2)
 
-        final_boss = Boss("Final Boss", 50, 15, 10, Dice(8))
+        final_boss = Boss("Final Boss", 30, 6, 8, Dice(8))
 
         while self.player.is_alive() and final_boss.is_alive():
             self.clear_console()
@@ -146,17 +154,27 @@ class GameEngine:
             input("\nPress Enter to continue the battle.")
 
         if self.player.is_alive():
-            print("Congratulations! You defeated the final boss.")
+            self.clear_console()
+            sound_victory.play()
+            self.display_congratulations_story
         else:
+            sound_last_boss.stop()
+            sound_game_over.play()
             print("You were defeated by the final boss. Game over.")
 
         input("Press Enter to return to the labyrinth.")
 
     def change_floor(self):
         print("Regenerating the labyrinth...")
-        self.play_in_game_music()  # Assure-toi que la musique in-game continue après le changement de niveau
+        self.play_in_game_music()
+   
+        current_exits_reached = self.labyrinth._exits_reached
+    
         labyrinth_size, num_enemies = self.get_difficulty_settings(self.difficulty)
         self.labyrinth = Labyrinthe(labyrinth_size, labyrinth_size, self.player, num_enemies)
+
+        self.labyrinth._exits_reached = current_exits_reached
+        
         print("You've changed floors. A new labyrinth awaits!")
 
 
@@ -194,28 +212,33 @@ class GameEngine:
         if self.player.is_alive():
             sound_victory.play()
             print("Congratulations! You won the battle.")
+
         else:
             sound_game_over.play()
             print("You were defeated in battle. Game over.")
         
+        sound_last_boss.stop()
+        sound_in_game.play()
         input("Press Enter to return to the labyrinth.")
         
         
     def display_welcome_story(self):
-        print("Once upon a time...")
+        console = Console()
+
+        console.print("\n[bold yellow]You find yourself in the labyrinth[/bold yellow]")
         time.sleep(1)
-        print("You find yourself in a mysterious labyrinth surrounded by ancient trees.")
+        console.print("[italic]There is plenty of danger but a big treasure at the end[/italic]")
         time.sleep(2)
-        print("Legends speak of a hidden exit that leads to untold treasures.")
+        console.print("[red]The legend tried to warn me, but I accepted my fate[/red]")
         time.sleep(2)
-        print("Brave adventurer, your quest begins now!")
+        console.print("[green]My quest has begun[/green]")
 
     def display_congratulations_story(self):
-        print("As you step through the exit, you feel a rush of triumph.")
+        print("I find the exit by myself")
         time.sleep(2)
-        print("You have conquered the labyrinth and claimed the legendary treasures!")
+        print("I see a big tresor with big chest and lots of golds!")
         time.sleep(2)
-        print("The world will forever remember the brave adventurer who navigated the maze.")
+        print(f"The world will always remind of {self.player} the king of adventurer")
 
     def clear_console(self):
         os.system('cls' if os.name == 'nt' else 'clear')

@@ -66,28 +66,6 @@ else:
     exit()
 
 clear_console()
-def choose_difficulty(self):
-        print("Choose your difficulty:")
-        print("1. Easy")
-        print("2. Medium")
-        print("3. Hard")
-
-        while True:
-            choice = input("Enter the number of your choice: ")
-            if choice in ['1', '2', '3']:
-                return int(choice)
-            else:
-                print("Invalid choice. Please enter 1, 2, or 3.")
-
-
-def get_difficulty_settings(self, difficulty):
-    if difficulty == 1:
-        return 10, 2  
-    elif difficulty == 2:
-        return 15, 4 
-    elif difficulty == 3:
-        return 20, 6 
-    
 
 sound_lobby.stop()
 

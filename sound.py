@@ -1,10 +1,8 @@
 import pygame
 import os
 
-# Désactive l'affichage du message d'accueil de Pygame
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
-# Initialise Pygame
 pygame.init()
 
 
